@@ -4,7 +4,12 @@
     gap: 10px;
 }
 
-.container img {
+.container > * {
     width: calc((100% - 20px) / 3);
+}
+
+.container img {
+    width: 100%;
+    height: auto;
     border-radius: 10px;
 }

@@ -4,11 +4,11 @@ import {MovieData} from "@/types";
 import style from './index.module.css';
 import {useRouter} from "next/router";
 import movies from '@/mock/dummy.json';
+import MovieItem from "@/pages/components/movie-item";
 
 export default function Page() {
   const router = useRouter();
   const q = router.query.q as string;
-  console.log(q);
 
   const searchedMovies: MovieData[]
     = movies.filter(movie => movie.title.includes(q));
@@ -21,7 +21,7 @@ export default function Page() {
 
   return (
     <div className={style.container}>
-      {searchedMovies.map((movie) => <img src={movie.posterImgUrl} alt={movie.title}/>)}
+      {searchedMovies.map((movie) => <MovieItem key={movie.id} {...movie} />)}
     </div>
   );
 }
