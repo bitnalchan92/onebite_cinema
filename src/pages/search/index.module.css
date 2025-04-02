@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.container img {
+    width: calc((100% - 20px) / 3);
+    border-radius: 10px;
+}

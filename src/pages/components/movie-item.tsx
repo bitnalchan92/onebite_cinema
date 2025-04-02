@@ -2,9 +2,9 @@ import type {MovieData} from "@/types";
 import style from './movie-item.module.css';
 import Link from "next/link";
 
-export default function MovieItem({title, posterImgUrl}: MovieData) {
+export default function MovieItem({id, title, posterImgUrl}: MovieData) {
   return (
-    <Link href={``}>
+    <Link href={`/movie/${id}`}>
       <img src={posterImgUrl} alt={title}/>
     </Link>
   );

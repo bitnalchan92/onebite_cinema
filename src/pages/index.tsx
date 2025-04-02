@@ -12,7 +12,7 @@ export default function Home() {
     .slice(0, 3);
 
   return (
-    <div className={style.container}>
+    <div>
       <section>
         <h3>지금 가장 추천하는 영화</h3>
         <div className={style.recommend_movie_container}>
@@ -20,7 +20,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section>
+      <section style={{marginTop: "40px"}}>
         <h3>등록된 모든 영화</h3>
         <div className={style.movie_container}>
           {movieData.map((movie) => <MovieItem key={movie.id} {...movie}/>)}
