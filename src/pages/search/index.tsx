@@ -13,6 +13,12 @@ export default function Page() {
   const searchedMovies: MovieData[]
     = movies.filter(movie => movie.title.includes(q));
 
+  if (searchedMovies.length === 0 ) {
+    return (
+      <div>검색 결과가 없습니다.</div>
+    );
+  }
+
   return (
     <div className={style.container}>
       {searchedMovies.map((movie) => <img src={movie.posterImgUrl} alt={movie.title}/>)}
