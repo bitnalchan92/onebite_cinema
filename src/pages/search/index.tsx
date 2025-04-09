@@ -1,19 +1,23 @@
 import {ReactNode} from "react";
 import SearchableLayout from "@/pages/components/searchable-layout";
-import {MovieData} from "@/types";
 import style from './index.module.css';
-import {useRouter} from "next/router";
-import movies from '@/mock/dummy.json';
 import MovieItem from "@/pages/components/movie-item";
+import {GetServerSidePropsContext, InferGetServerSidePropsType} from "next";
+import fetchAllMovies from "@/lib/fetch-all-movies";
 
-export default function Page() {
-  const router = useRouter();
-  const q = router.query.q as string;
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const q = context.query.q as string;
+  const movies = await fetchAllMovies(q)
 
-  const searchedMovies: MovieData[]
-    = movies.filter(movie => movie.title.includes(q));
+  return {
+    props: {
+      movies
+    }
+  }
+}
 
-  if (searchedMovies.length === 0 ) {
+export default function Page({movies}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  if (movies.length === 0 ) {
     return (
       <div>검색 결과가 없습니다.</div>
     );
@@ -21,7 +25,7 @@ export default function Page() {
 
   return (
     <div className={style.container}>
-      {searchedMovies.map((movie) => <MovieItem key={movie.id} {...movie} />)}
+      {movies.map((movie) => <MovieItem key={movie.id} {...movie} />)}
     </div>
   );
 }
