@@ -3,10 +3,10 @@ import SearchableLayout from "@/pages/components/searchable-layout";
 import MovieItem from "@/pages/components/movie-item";
 import style from './index.module.css';
 import fetchAllMovies from "@/lib/fetch-all-movies";
-import {InferGetServerSidePropsType} from "next";
+import {InferGetStaticPropsType} from "next";
 import fetchRecoMovies from "@/lib/fetch-reco-movies";
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const [allMovies, recoMovies] = await Promise.all([
     fetchAllMovies(), fetchRecoMovies()
   ])
@@ -19,7 +19,7 @@ export const getServerSideProps = async () => {
   }
 }
 
-export default function Home({allMovies, recoMovies}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home({allMovies, recoMovies}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div>
       <section>

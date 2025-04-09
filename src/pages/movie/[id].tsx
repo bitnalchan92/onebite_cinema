@@ -1,11 +1,25 @@
 import {MovieData} from "@/types";
 import style from './[id].module.css';
-import {GetServerSidePropsContext, InferGetServerSidePropsType} from "next";
+import {GetStaticPropsContext, InferGetServerSidePropsType} from "next";
 import fetchOneMovie from "@/lib/fetch-one-movie";
+import {useRouter} from "next/router";
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const id = Number(context.params?.id);
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: true
+  }
+}
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  const id = Number(context.params!.id);
   const movie = await fetchOneMovie(id);
+
+  if (!movie) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: {
@@ -14,11 +28,21 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   }
 }
 
-export default function Page({movie}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Page({movie}: InferGetServerSidePropsType<typeof getStaticProps>) {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return (
+      <div>
+        <div style={{marginTop: '20px'}}>로딩중 입니다...</div>
+      </div>
+    );
+  }
+
   if (!movie) {
     return (
       <div>
-        <div style={{marginTop: '20px'}}>검색하신 영화를 찾을 수 없습니다.</div>
+        <div style={{marginTop: '20px'}}>문제가 발생했습니다. 다시 시도해주세요.</div>
       </div>
     );
   }
@@ -37,6 +61,7 @@ export default function Page({movie}: InferGetServerSidePropsType<typeof getServ
   return (
     <div className={style.container}>
       <div style={{backgroundImage: `url('${posterImgUrl}')`}} className={style.cover_img_container}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={posterImgUrl} alt={title}/>
       </div>
       <div className={style.title}>{title}</div>
