@@ -1,7 +1,7 @@
 import {MovieData} from "@/types";
 
 export default async function fetchAllMovies(q?: string): Promise<MovieData[]> {
-  let url = `http://localhost:12345/movie`;
+  let url = `https://onebite-cinema-api-alpha.vercel.app/movie`;
 
   if ( q ) url += `/search?q=${q}`;
 
